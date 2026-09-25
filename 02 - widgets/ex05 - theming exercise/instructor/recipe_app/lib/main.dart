@@ -13,15 +13,16 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       theme: ThemeData(
-        // notice: in this commit state (git checkout <this commit hash>), there's no pink
-        // or anything similar going on anywhere in this page, because the backgroundColor prop
-        // in the Scaffold() below is immediately overriding it.
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.pink,
-        )
+        // still no background colour — now it's white.
+        // this is because the default background colour in a ColorScheme is
+        // ColorScheme.surface
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+        // poking around in what I can specify for ThemeData, there's a scaffoldBackgroundColor!
+        // I *want* to be able to reference the color scheme and apply it to a specific element:
+        scaffoldBackgroundColor: colorScheme.primary,
+        // however, there's a compiler error because colorScheme isn't finalised/created yet
       ),
       home: Scaffold(
-        backgroundColor: Colors.blueGrey.shade200,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch, // like a flexbox!
                               // .stretch alignment means children fill the entire width
