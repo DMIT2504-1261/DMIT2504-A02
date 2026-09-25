@@ -4,6 +4,9 @@
 
 - [flutter] [widgets (docs)](https://docs.flutter.dev/ui/widgets)
 
+- [pkg] [flex_color_scheme](https://pub.dev/packages/flex_color_scheme) *sick* package for generating schemes, including complementary light/dark themes
+  - including a *super sick* [theme playground/sandbox](https://playground.flexcolorscheme.com/)
+
 ---
 
 # Readings
