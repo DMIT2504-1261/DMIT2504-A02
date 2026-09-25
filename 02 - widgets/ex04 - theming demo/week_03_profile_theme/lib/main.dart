@@ -11,9 +11,9 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          colorScheme: ColorScheme.fromSwatch(
-        primarySwatch: Colors.deepOrange,
-      )),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.blue)
+          ),
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Simple Layout Demo'),
