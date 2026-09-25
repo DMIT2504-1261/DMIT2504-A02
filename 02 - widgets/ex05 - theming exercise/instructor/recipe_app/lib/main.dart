@@ -12,6 +12,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return MaterialApp(
+      theme: ThemeData(
+        // notice: in this commit state (git checkout <this commit hash>), there's no pink
+        // or anything similar going on anywhere in this page, because the backgroundColor prop
+        // in the Scaffold() below is immediately overriding it.
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.pink,
+        )
+      ),
       home: Scaffold(
         backgroundColor: Colors.blueGrey.shade200,
         body: Column(
