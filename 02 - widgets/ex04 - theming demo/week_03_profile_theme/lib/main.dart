@@ -52,6 +52,9 @@ class ProfileImage extends StatelessWidget {
         ),
         border: Border.all(
           width: 4.0,
+          // I need to read from the theme (outside the scope of this component)
+          // in order to colour my border, because a(n image) border colour isn't
+          // within the pre-generated scope of a colour scheme.
           color: Theme.of(context).colorScheme.primary,
         ),
       ),
