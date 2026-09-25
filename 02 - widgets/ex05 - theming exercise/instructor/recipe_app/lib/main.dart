@@ -11,16 +11,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    final colorScheme = ColorScheme.fromSeed(seedColor: Colors.pink);
+
     return MaterialApp(
       theme: ThemeData(
-        // still no background colour — now it's white.
-        // this is because the default background colour in a ColorScheme is
-        // ColorScheme.surface
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
-        // poking around in what I can specify for ThemeData, there's a scaffoldBackgroundColor!
-        // I *want* to be able to reference the color scheme and apply it to a specific element:
+        colorScheme: colorScheme,
+        // by generating my colour scheme first, this now references something that actually exists
         scaffoldBackgroundColor: colorScheme.primary,
-        // however, there's a compiler error because colorScheme isn't finalised/created yet
       ),
       home: Scaffold(
         body: Column(
