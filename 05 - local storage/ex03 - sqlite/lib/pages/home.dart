@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:week_06_sqlite/models/todo.dart';
 
+import '../services/db.dart';
+import '../models/todo.dart';
+import '../controllers/todo_controller.dart';
+
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -10,7 +15,19 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final List<Todo> _todos = [];
-  int _counter = 0;
+  late int _counter = 0;             // will be determined once we fetch from db, so it won't be available immediately
+  late TodoController _controller;   // set in initState, not in constructor, so it won't be available immediately
+
+  @override
+  void initState() {
+    // when this component first loads, set up DB connection through the controller
+    _initState();  // db stuff is async but initState can't be, so I need to pack away async functionality into its own function
+    super.initState();
+  }
+
+  Future<void> _initState() async {
+    _controller = TodoController.getInstance(await getDatabase());
+  }
 
   void _addTodo() {
     setState(() {
