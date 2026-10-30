@@ -25,13 +25,39 @@ class TodoController {
     return _instance!; // 'trust me bro' operator — _instance is nullable, compiler cries, but we know we're either reusing or creating the instance
   }
 
-  Future<List<Todo>> getTodos() async {}
+  Future<List<Todo>> getTodos() async {
+    // what we get back from the db is a Map {key: value}, so we pull that, then convert its formatting
+    final List<Map<String, dynamic>> todoMaps = await _db!.query(tableName);
+    // e.g. [ {id: 1, description: "write code", done: false}, {...}, ]
 
-  Future<void> addTodo(Todo todo) async {}
+    return List.generate(
+      todoMaps.length, // number of items to generate
+      (i) {            // callback: for a counter number, return each element
+        return Todo(
+          id: todoMaps[i]['id'],
+          description: todoMaps[i]['description'],
+          done: todoMaps[i]['done'] == 1,   // I need a bool not an int 0/1, so if done==1, I get true (otherwise false)
+        );
+      }    
+    );
+  }
 
-  Future<void> updateTodo(Todo todo) async {}
+  Future<void> addTodo(Todo todo) async {
+    await _db!.insert(tableName, todo.toMap()); // insert the {key: value} representation of the instance, which is what sqflite expects
+  }
 
-  Future<void> deleteAllTodos() async {}
+  Future<void> updateTodo(Todo todo) async {
+    await _db!.update(
+      tableName,
+      todo.toMap(),
+      where: 'id = ?',      // the ? is a placeholder that gets replaced with whereArgs (tldr) to prevent SQL injection
+      whereArgs: [todo.id], // otherwise, we'd just write 'id = ${todo.id}', but whereArgs escapes injection potential
+    );
+  }
+
+  Future<void> deleteAllTodos() async {
+    await _db!.delete(tableName);  // recall services/db.dart — if there's no db/table, it will be recreated
+  }
 
 }
 
