@@ -11,9 +11,18 @@ class TodoController {
 
   static const tableName = 'todos';
 
-  static TodoController getInstance() {
+  TodoController._internal(Database db) {
+    // ._internal is a named private constructor; we won't have a public constructor, meaning:
+    // code outside this file/class cannot call TodoController() (or anything on it) directly.
+    // instead, we'll task getInstance with talking to the instance (part of ensuring we only have 1 controller)
+    _db = db;
+  }
+
+  static TodoController getInstance(Database db) {
     // get the (single) instance of the todocontroller so all the behaviour I call
     // runs from that same single instance
+    _instance ??= TodoController._internal(db);  // create or reuse instance; ??= means assign only if null
+    return _instance!; // 'trust me bro' operator — _instance is nullable, compiler cries, but we know we're either reusing or creating the instance
   }
 
   Future<List<Todo>> getTodos() async {}
