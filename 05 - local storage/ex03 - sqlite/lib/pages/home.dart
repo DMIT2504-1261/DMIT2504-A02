@@ -14,7 +14,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<Todo> _todos = [];
+  List<Todo> _todos = [];
   late int _counter = 0;             // will be determined once we fetch from db, so it won't be available immediately
   late TodoController _controller;   // set in initState, not in constructor, so it won't be available immediately
 
@@ -27,13 +27,33 @@ class _HomeState extends State<Home> {
 
   Future<void> _initState() async {
     _controller = TodoController.getInstance(await getDatabase());
+    _getTodosFromBackend();
   }
 
-  void _addTodo() {
+  // if I'm transitioning from internal widget state to a local backend,
+  // those are now two differing sources of truth; I have to make sure that all my data mutation
+  // doesn't result in any desync between those two things. 
+
+  // because I have a local backend, the delay time of i/o is less of a concern. 
+  // so the sensible thing to do is ALWAYS write to the backend and ONLY read UI/app state from the backend.
+  // -> I'm avoiding widget state and db state being in potential conflict by making sure that 
+  //    I only ever write directly to the local dbfile and I only ever read widget state from it.
+  
+  // throughout this commit: the common pattern I'm implementing is:
+  //  - db is the sole source of truth: I only write to it (not internal state); I only read to it from internal state
+  //  - every time I write to the db, I refetch from the db & re-render
+  Future<void> _getTodosFromBackend() async {
+    // 1. read from backend
+    final todos = await _controller.getTodos();
     setState(() {
-      _todos.add(Todo(description: 'Todo $_counter', done: false));
-      _counter++;
+      _todos = todos;
+      _counter = _todos.length; // this placeholder logic; i could delete #3 and length vs. max would be out of sync
     });
+  }
+  
+  Future<void> _addTodo(Todo todo) async {
+    await _controller.addTodo(todo);
+    _getTodosFromBackend();
   }
 
   @override
@@ -62,9 +82,10 @@ class _HomeState extends State<Home> {
                           ),
                           trailing: Checkbox(
                             value: _todos[index].done,
-                            onChanged: (value) {
+                            onChanged: (value) async {  // any time I introduce i/o, it needs to be async
                               setState(() {
                                 _todos[index].done = value!;
+                                _controller.updateTodo(_todos[index]);
                               });
                             },
                           ),
@@ -74,11 +95,9 @@ class _HomeState extends State<Home> {
                   ),
             if (_todos.isNotEmpty)
               ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _todos.clear();
-                    _counter = 0;
-                  });
+                onPressed: () async {
+                  await _controller.deleteAllTodos();
+                  _getTodosFromBackend();
                 },
                 child: const Text('Delete All'),
               ),
@@ -87,7 +106,9 @@ class _HomeState extends State<Home> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _addTodo,
+        onPressed: () async {
+          await _addTodo(Todo(description: 'Todo $_counter', done: false));
+        },
         child: const Icon(Icons.add),
       ),
     );
