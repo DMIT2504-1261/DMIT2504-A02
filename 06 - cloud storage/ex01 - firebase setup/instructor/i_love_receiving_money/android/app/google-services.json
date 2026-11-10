@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "166111911994",
+    "project_id": "i-love-receiving-money",
+    "storage_bucket": "i-love-receiving-money.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:166111911994:android:2fe98612267ffa69201503",
+        "android_client_info": {
+          "package_name": "com.example.i_love_receiving_money"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyGQrLBwUWqmJsqTJtwKUk4Id_XzhmUFM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
