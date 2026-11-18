@@ -34,7 +34,7 @@ Each user will only see only their own data.
 <details>
 <summary><strong>0. Copy over the skeleton app from example 1 that's set up for Firebase.</strong></summary>
 
-You can use either the one you wrote, or my finished example in the `instructor` folder.
+Use the one you wrote, since mine (in `instructor`) wire to my firebase login, not yours
 
 </details>
 
