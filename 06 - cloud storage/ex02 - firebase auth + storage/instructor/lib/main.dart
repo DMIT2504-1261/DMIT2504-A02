@@ -10,23 +10,23 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // load my internal application state management
-  ApplicationState authAppState = ApplicationState();
+  ApplicationState appState = ApplicationState();
 
   // run the app
-  runApp(MainApp(authAppState: authAppState));
+  runApp(MainApp(appState: appState));
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({required this.authAppState, super.key});
+  const MainApp({required this.appState, super.key});
 
-  final ApplicationState authAppState;
+  final ApplicationState appState;
 
   @override
   Widget build(BuildContext context) {
     // this is just routing between screens that you're already familiar with
     final routes = {
       '/': (context) {
-        return HomePage(authAppState: authAppState);
+        return HomePage(appState: appState);
       },
       '/sign-in': (context) {
         return SignInScreen( // built-in we can use from firebase_ui_auth package.

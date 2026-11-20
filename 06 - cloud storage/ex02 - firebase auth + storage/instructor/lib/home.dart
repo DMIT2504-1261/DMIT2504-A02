@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'app_state.dart';
 
-// I should be renaming authAppState to just appState since we're about to use it for storage,
-// but in the interest of moving forward with our class time, I will use a crap name instead
 
 class HomePage extends StatelessWidget {
-  const HomePage({required this.authAppState, super.key});
+  const HomePage({required this.appState, super.key});
 
-  final ApplicationState authAppState; // I need to import and use the auth listener class I just made
+  final ApplicationState appState; // I need to import and use the auth listener class I just made
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +29,9 @@ class HomePage extends StatelessWidget {
           // and rebuild/re-render the widget automatically.
           // If we used a plain builder method, nothing would update when listener notification fired.
           ListenableBuilder(
-            listenable: authAppState,
+            listenable: appState,
             builder: (context, child) {
-              return authAppState.loggedIn
+              return appState.loggedIn
                   ? Column(
                       children: <Widget>[
                         ElevatedButton(
