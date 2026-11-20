@@ -70,9 +70,9 @@ class MainApp extends StatelessWidget {
           ],
         );
       },
-      '/todos': (context) {
-        return TodoPage(appState: appState);
-      }
+      // '/todos': (context) {
+      //   return TodoPage(appState: appState);
+      // }
     };
 
     return MaterialApp(
