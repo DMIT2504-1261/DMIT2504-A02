@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'app_state.dart';
 
+// I should be renaming authAppState to just appState since we're about to use it for storage,
+// but in the interest of moving forward with our class time, I will use a crap name instead
 
 class HomePage extends StatelessWidget {
   const HomePage({required this.authAppState, super.key});
@@ -32,10 +34,19 @@ class HomePage extends StatelessWidget {
             listenable: authAppState,
             builder: (context, child) {
               return authAppState.loggedIn
-                  ? ElevatedButton(
-                      onPressed: () =>
-                          Navigator.of(context).pushNamed('/profile'),
-                      child: const Text('Profile'),
+                  ? Column(
+                      children: <Widget>[
+                        ElevatedButton(
+                          onPressed: () =>
+                              Navigator.of(context).pushNamed('/profile'),
+                          child: const Text('Profile'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () =>
+                              Navigator.of(context).pushNamed('/todos'),
+                          child: const Text('Todo List'),
+                        ),
+                      ],
                     )
                   : ElevatedButton(
                       onPressed: () =>
