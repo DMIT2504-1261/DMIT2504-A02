@@ -1,6 +1,7 @@
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'todo_page.dart';
 import 'app_state.dart';
 import 'home.dart';
 
@@ -68,12 +69,31 @@ class MainApp extends StatelessWidget {
             })
           ],
         );
+      },
+      '/todos': (context) {
+        return TodoPage(appState: appState);
       }
     };
 
     return MaterialApp(
       title: 'Firebase UI Auth Demo',
       routes: routes,
+      onGenerateRoute: (settings) {
+        // if the route is '/todos', AND user is logged in, return the todo page
+        // if the route is '/todos', and user is NOT logged in, return the homepage
+        if (settings.name == '/todos') {
+          if (appState.loggedIn) {
+            return MaterialPageRoute(builder: (context) {
+              return TodoPage(appState: appState);
+            });
+          } else {
+            return MaterialPageRoute(builder: (context) {
+              return HomePage(appState: appState);
+            });
+          }
+        }
+        return null;
+      },
     );
   }
 }
