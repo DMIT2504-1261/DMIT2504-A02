@@ -5,10 +5,12 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 // which would cause a name collision; we'll just want the one from firebase_ui_auth.
 // objectively terrible library design to have the same name for something in two separate
 // pkgs *designed to be used together*.
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
+import 'models/todo.dart';
 
 // ChangeNotifier is a flutter built-in.
 // if curious: https://blog.stackademic.com/a-complete-guide-to-using-changenotifier-and-changenotifierprovider-in-flutter-00f957819cf3?gi=ddc0375b3ba3
