@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../models/user.dart';
 import 'first_name_page.dart';
 import 'last_name_page.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key}) : user = User('Jane', 'Doe'); // pass in a user with a default value
+
+  // if I want to pass something in a constructor, it has to be a field that exists on the class
+  final User user;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +25,7 @@ class HomePage extends StatelessWidget {
             ElevatedButton(
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const FirstNamePage(),
+                  builder: (context) => FirstNamePage(user: user),
                 ),
               ),
               child: const Text('First Name Page'),
@@ -32,7 +36,7 @@ class HomePage extends StatelessWidget {
             ElevatedButton(
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const LastNamePage(),
+                  builder: (context) => LastNamePage(user: user),
                 ),
               ),
               child: const Text('Last Name Page'),
