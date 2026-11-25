@@ -31,9 +31,7 @@ class FirstNamePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         // Update our user firs name here
-        onPressed: () {
-          //noop;
-        },
+        onPressed: () => user.firstName = "John",
         child: const Icon(Icons.update),
       ),
     );

@@ -28,10 +28,8 @@ class LastNamePage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        // Update our user last name here
-        onPressed: () {
-          //noop;
-        },
+        // Update our user last name here - we'll just pass a new hardcoded value
+        onPressed: () => user.lastName = 'Flutter',
         child: const Icon(Icons.update),
       ),
     );
