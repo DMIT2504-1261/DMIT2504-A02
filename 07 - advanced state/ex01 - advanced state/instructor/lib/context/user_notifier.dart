@@ -7,11 +7,15 @@ import 'package:flutter/material.dart';
 import '../models/user.dart';
 
 
-class UserNotifier {
+class UserNotifier extends InheritedNotifier<User> { // an InheritedNotifier is technically a widget, so it needs a key
 
   const UserNotifier({
+    super.key,
     required User user,      // an instance of the 'gossiping data structure' we've already made (User)
     required Widget child,   // widget/component/remainder of element tree that should be nested inside this shared state provider
+  }) : super(notifier: user, child: child);
+  // const SomeClass({ someClassAttr: value }) : super(parentAttr: value) 
+  // -> forwarding params to the parent class's constructor 
 
     // we'll write something that starts to behave liek Flutter context you're already familiar with:
     // e.g. Theme.of(context) -> go upwards in the element tree until a Theme is found, and return it.
@@ -19,15 +23,21 @@ class UserNotifier {
 
     static UserNotifier? maybeOf(BuildContext context) {
       // will try to return a UserNotifier instance from context
+      return context.dependOnInheritedWidgetOfExactType<UserNotifier>();
     }
 
-    static User of(BuildContext) {
+    static User of(BuildContext context) {
       // 1. try to find an existing UserNotifier instance to work with
+      final UserNotifier? userNotifier = maybeOf(context);
       // 2. throw an error if we don't find one
+      if (userNotifier == null || userNotifier.notifier == null) {
+        throw StateError('UserNotifier: Not inherited UserNotifier found in context.');
+      }
       // 3. if we do, return that notifier
+      return userNotifier.notifier!;  // reminder: ! says, "even though this type looks nullable, I promise you it won't be"
+                                      // we ONLY EVER want to do this if we are ABSOLUTELY SURE -- never to just silence compiler problems
+                                      // here, we know we'll be throwing an exception in the line above if it's null, so it's fine
     }
-
-  });
 
 }
 
